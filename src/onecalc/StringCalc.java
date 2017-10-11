@@ -14,6 +14,7 @@ public class StringCalc {
     }
     
     public static double calculate(String expression) {
+        List<String> expressionList = StringCalc.parseCharArrayToStringList(expression.toCharArray());
         
         return 0;
     }
@@ -33,17 +34,76 @@ public class StringCalc {
         return expressionArray;
     }
     
-    protected static char[] calculateMultiplication(char[] expressionArray) {
-        for (int counter = 0; counter > expressionArray.length; counter++) {
-            // find multiplication, perform left & right elements of it. replace with result.
-        }
-        return expressionArray;
+    protected static void calculateMultiplication(List<String> expressionList) {
+        boolean calculationPerformed = false;
+        do {
+            for(int i = 0; i < expressionList.size();i++) {
+                if( expressionList.get(i).equals("*")) {
+                    double left = Double.parseDouble(expressionList.get(i-1));
+                    double right = Double.parseDouble(expressionList.get(i+1));
+                    expressionList.set(i, String.valueOf(left*right));
+                    expressionList.remove(i+1);
+                    expressionList.remove(i-1);
+                    calculationPerformed = true;
+                }
+            }
+        } while (calculationPerformed);
     }
     
-    protected static List<String> parseCharArrayToMathList(char[] expressionArray) {
+    protected static void calculateDivision(List<String> expressionList) {
+        boolean calculationPerformed = false;
+        do {
+            for(int i = 0; i < expressionList.size();i++) {
+                if( expressionList.get(i).equals("/")) {
+                    double left = Double.parseDouble(expressionList.get(i-1));
+                    double right = Double.parseDouble(expressionList.get(i+1));
+                    expressionList.set(i, String.valueOf(left/right));
+                    expressionList.remove(i+1);
+                    expressionList.remove(i-1);
+                    calculationPerformed = true;
+                }
+            }
+        } while (calculationPerformed);
+    }
+    
+    protected static void calculateAddition(List<String> expressionList) {
+        boolean calculationPerformed = false;
+        do {
+            for(int i = 0; i < expressionList.size();i++) {
+                if( expressionList.get(i).equals("+")) {
+                    double left = Double.parseDouble(expressionList.get(i-1));
+                    double right = Double.parseDouble(expressionList.get(i+1));
+                    expressionList.set(i, String.valueOf(left+right));
+                    expressionList.remove(i+1);
+                    expressionList.remove(i-1);
+                    calculationPerformed = true;
+                }
+            }
+        } while (calculationPerformed);
+    }
+    
+    protected static void calculateSubtraction(List<String> expressionList) {
+        boolean calculationPerformed = false;
+        do {
+            for(int i = 0; i < expressionList.size();i++) {
+                if( expressionList.get(i).equals("-")) {
+                    double left = Double.parseDouble(expressionList.get(i-1));
+                    double right = Double.parseDouble(expressionList.get(i+1));
+                    expressionList.set(i, String.valueOf(left-right));
+                    expressionList.remove(i+1);
+                    expressionList.remove(i-1);
+                    calculationPerformed = true;
+                }
+            }
+        } while (calculationPerformed);
+    }
+    
+    protected static List<String> parseCharArrayToStringList(char[] expressionArray) {
         //expression should be checked on mathematical correctness before calling this method.
+        //only number and mathematical functions such as +,-, *, /, ^ and ( )
         List<String> expressionList = new ArrayList<>();
         for (int counter = 0; counter < expressionArray.length; counter++) {
+            //parsing numbers to numbers, actions to actions
             switch(expressionArray[counter]) {
                 case '(':   expressionList.add("(");
                                break;
@@ -72,7 +132,33 @@ public class StringCalc {
                     break;
             }
         }
+        //distinguishing negative numbers
+        //TODO: put negative sign if number is negative, remove parentheses if inside is only 1 number
+        for(int i = 0; i < expressionList.size();i++) {
+           if (expressionList.get(i).equals("-") && StringCalc.isNumber(expressionList.get(i-1)) && expressionList.get(i+1).equals("-") ) {
+               String number = "";
+           }
+        }
+        
         return expressionList;
+    }
+    
+    private static boolean isNumber(String value) {
+        
+        if( value.length() > 1) {
+            return true;
+        }
+        switch(value.charAt(0)) {
+                 case '(':   return false;
+                 case ')':   return false;
+                 case '+':   return false;
+                 case '-':   return false;
+                 case '*':   return false;
+                 case '/':   return false;
+                 case '^':   return false;
+           
+                 default: return true;
+        }
     }
 
 }
