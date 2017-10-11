@@ -3,7 +3,7 @@ package onecalc;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.lang.ArithmeticException;
 /**
  * @author Yurii Leshchyshyn
  */
@@ -35,8 +35,9 @@ public class StringCalc {
     }
     
     protected static void calculateMultiplication(List<String> expressionList) {
-        boolean calculationPerformed = false;
+        boolean calculationPerformed;
         do {
+            calculationPerformed = false;
             for(int i = 0; i < expressionList.size();i++) {
                 if( expressionList.get(i).equals("*")) {
                     double left = Double.parseDouble(expressionList.get(i-1));
@@ -50,13 +51,15 @@ public class StringCalc {
         } while (calculationPerformed);
     }
     
-    protected static void calculateDivision(List<String> expressionList) {
-        boolean calculationPerformed = false;
+    protected static void calculateDivision(List<String> expressionList) throws ArithmeticException {
+        boolean calculationPerformed;
         do {
+            calculationPerformed = false;
             for(int i = 0; i < expressionList.size();i++) {
                 if( expressionList.get(i).equals("/")) {
                     double left = Double.parseDouble(expressionList.get(i-1));
                     double right = Double.parseDouble(expressionList.get(i+1));
+                    if (right == 0) throw new ArithmeticException("Can't divide by 0"); // chech division by 0
                     expressionList.set(i, String.valueOf(left/right));
                     expressionList.remove(i+1);
                     expressionList.remove(i-1);
@@ -67,8 +70,9 @@ public class StringCalc {
     }
     
     protected static void calculateAddition(List<String> expressionList) {
-        boolean calculationPerformed = false;
+        boolean calculationPerformed;
         do {
+            calculationPerformed = false;
             for(int i = 0; i < expressionList.size();i++) {
                 if( expressionList.get(i).equals("+")) {
                     double left = Double.parseDouble(expressionList.get(i-1));
@@ -83,8 +87,9 @@ public class StringCalc {
     }
     
     protected static void calculateSubtraction(List<String> expressionList) {
-        boolean calculationPerformed = false;
+        boolean calculationPerformed;
         do {
+            calculationPerformed = false;
             for(int i = 0; i < expressionList.size();i++) {
                 if( expressionList.get(i).equals("-")) {
                     double left = Double.parseDouble(expressionList.get(i-1));
@@ -132,11 +137,14 @@ public class StringCalc {
                     break;
             }
         }
-        //distinguishing negative numbers
-        //TODO: put negative sign if number is negative, remove parentheses if inside is only 1 number
+        //distinguishing negative numbers, removing parentheses around them
         for(int i = 0; i < expressionList.size();i++) {
-           if (expressionList.get(i).equals("-") && StringCalc.isNumber(expressionList.get(i-1)) && expressionList.get(i+1).equals("-") ) {
-               String number = "";
+           if (expressionList.get(i).equals("-") && expressionList.get(i-1).equals("(") && expressionList.get(i+2).equals(")")) {
+               String number = "-" + expressionList.get(i+1);
+               expressionList.set(i+1, number);
+               expressionList.remove(i+2);
+               expressionList.remove(i);
+               expressionList.remove(i-1);
            }
         }
         

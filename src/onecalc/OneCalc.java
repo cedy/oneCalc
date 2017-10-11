@@ -18,13 +18,13 @@ public class OneCalc {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String exmp = "1+2*3*4/3-0.5*10+5"; // equals -1
+        String exmp = "1+2*3*4/3-(-0.5)*10+5"; // equals -1
         String text = "";
         List<String> expressionList = StringCalc.parseCharArrayToStringList(exmp.toCharArray());
-        //StringCalc.calculateMultiplication(expressionList);
-        //StringCalc.calculateDivision(expressionList);
-        //StringCalc.calculateAddition(expressionList);
-        //StringCalc.calculateSubtraction(expressionList);
+        StringCalc.calculateMultiplication(expressionList);
+        StringCalc.calculateDivision(expressionList);
+//        StringCalc.calculateAddition(expressionList);
+//        StringCalc.calculateSubtraction(expressionList);
         for(int i = 0; i < expressionList.size();i++) {
            System.out.println(expressionList.get(i));
         }
