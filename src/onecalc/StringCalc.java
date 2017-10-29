@@ -31,13 +31,14 @@ public class StringCalc {
                      for(int leftP = rightP; leftP >= 0 ; leftP--) {
                          //loop backwards until found matching '('
                            if( expressionList.get(leftP).equals("(")) {
-                               //calculate expression inside parentheses
+                               //calculate expression inside parentheses                               
                                String result = StringCalc.calculate(expressionList.subList(leftP+1, rightP));
- 
+                               
                                //remove parentheses around inner expression
                                expressionList.remove(leftP+2);
                                expressionList.remove(leftP);
-                               rightP = 0;                            
+                               rightP = 0;  
+                               break;
                            }
                      }
                 }
@@ -48,10 +49,15 @@ public class StringCalc {
     private static String calculate(List<String> expressionList) {
         //calculating expression in mathematical order. Method returns result of the expression.
         StringCalc.calculatePower(expressionList);
+                                       System.out.println(expressionList);
         StringCalc.calculateMultiplication(expressionList);
+                                       System.out.println(expressionList);
         StringCalc.calculateDivision(expressionList);
-        StringCalc.calculateAddition(expressionList);
+                                       System.out.println(expressionList);
         StringCalc.calculateSubtraction(expressionList);
+                                       System.out.println(expressionList);                              
+        StringCalc.calculateAddition(expressionList);
+                                       System.out.println(expressionList);
         
         return expressionList.get(0);
     }
